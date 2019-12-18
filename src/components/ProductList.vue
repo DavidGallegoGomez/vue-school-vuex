@@ -4,7 +4,7 @@
     <img v-if="loading" src="https://i.imgur.com/JfPpwOA.gif" alt="loading spinner" />
     <ul v-if="!loading">
       <li v-for="product in products" :key="product.id">
-        Product: {{ product.title }} | Price: {{ product.price }} | Inventory: {{ product.inventory }}
+        Product: {{ product.title }} | Price: {{ product.price | currency }} | Inventory: {{ product.inventory }}
         <button @click="addProductToCart(product)">Add To Cart</button>
       </li>
     </ul>

@@ -3,9 +3,12 @@
     <h1>Shopping Cart</h1>
     <ul>
       <li v-for="product in products" :key="product.id">
-        Product: {{ product.title }} | Price: {{ product.price }} | Quantity: {{ product.quantity }}
+        Product: {{ product.title }} | Price: {{ product.price | currency }} | Quantity: {{ product.quantity }}
       </li>
     </ul>
+    <h2>Total: {{ total | currency }}</h2>
+    <button @click="$store.dispatch('checkout')">CheckOut</button>
+    <p v-if="$store.state.checkoutStatus">{{ $store.state.checkoutStatus }}</p>
   </div>
 </template>
 
@@ -15,6 +18,9 @@ export default {
   computed: {
     products() {
       return this.$store.getters.cartProducts
+    },
+    total() {
+      return this.$store.getters.cartTotal
     }
   }
 }
