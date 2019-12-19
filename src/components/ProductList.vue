@@ -5,13 +5,20 @@
     <ul v-if="!loading">
       <li v-for="product in products" :key="product.id">
         Product: {{ product.title }} | Price: {{ product.price | currency }} | Inventory: {{ product.inventory }}
-        <button @click="addProductToCart(product)">Add To Cart</button>
+        <button
+          :disabled="!productIsInStock(product)"
+          @click="addProductToCart(product)"
+        >
+          Add To Cart
+        </button>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
+import {mapState, mapGetters, mapActions} from 'vuex'
+
 export default {
   name: 'ProductList',
   data () {
@@ -19,19 +26,37 @@ export default {
       loading: false
     }
   },
-  computed: {
-    products() {
-      return this.$store.getters.availableProducts
-    }
+  computed:{
+    ...mapState({
+      products: state => state.products
+    }),
+    ...mapGetters({
+      productIsInStock: 'productIsInStock'
+    })
   },
+  /* computed: {
+    products() {
+      // return this.$store.getters.availableProducts
+      return this.$store.state.products
+    },
+    productIsInStock() {
+      return this.$store.getters.productIsInStock
+    }
+  }, */
   methods: {
+    ...mapActions({
+      fetchProducts: 'fetchProducts',
+      addProductToCart: 'addProductToCart'
+    })
+  },
+  /* methods: {
     addProductToCart(product) {
       this.$store.dispatch('addProductToCart', product)
     }
-  },
+  }, */
   created() {
     this.loading = true
-    this.$store.dispatch('fetchProducts')
+    this.fetchProducts()
       .then( () => this.loading = false )
       .catch( error => console.log(error) )
   }
