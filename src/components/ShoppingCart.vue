@@ -18,16 +18,19 @@ import {mapState, mapGetters, mapActions} from 'vuex'
 export default {
   name: 'ShoppingCart',
   computed: {
-    ...mapState({
-      checkoutStatus: 'checkoutStatus'
+    ...mapState('cart', {
+      checkoutStatus: state => state.checkoutStatus // DGG: Para acceder al módulo 'cart'
     }),
-    ...mapGetters({
+    ...mapGetters('cart', {
       products: 'cartProducts',
       total: 'cartTotal'
-    }),
+    })
   },
   methods: {
-    ...mapActions(['checkout'])
+    // ...mapActions(['checkout']) // DGG: No funciona esto...
+    ...mapActions('cart', {
+      checkout: 'checkout'
+    })
   }
   /* computed: {
     products() {

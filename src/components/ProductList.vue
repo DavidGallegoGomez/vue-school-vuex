@@ -27,10 +27,10 @@ export default {
     }
   },
   computed:{
-    ...mapState({
-      products: state => state.products
+    ...mapState('products', {
+      products: state => state.items // DGG: Para acceder al módulo 'products'
     }),
-    ...mapGetters({
+    ...mapGetters('products', {
       productIsInStock: 'productIsInStock'
     })
   },
@@ -45,8 +45,8 @@ export default {
   }, */
   methods: {
     ...mapActions({
-      fetchProducts: 'fetchProducts',
-      addProductToCart: 'addProductToCart'
+      fetchProducts: 'products/fetchProducts',
+      addProductToCart: 'cart/addProductToCart'
     })
   },
   /* methods: {
